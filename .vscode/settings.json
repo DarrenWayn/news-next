@@ -1,0 +1,8 @@
+{
+    // CSS
+    "files.associations": {
+      "*.css": "scss"
+    },
+    "scss.validate": false
+  }
+  
