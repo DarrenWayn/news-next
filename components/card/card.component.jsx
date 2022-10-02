@@ -1,44 +1,50 @@
-import React from 'react';
-import FetchDataViewed from '../../pages/api/api';
+import { _fetchDataViewed } from "../../pages/api/api";
+import { useState } from "react";
 
-const card = () => {
-  const period = [1, 7, 30];
-  // const { isLoading: ld, error: err, data: email } = FetchDataEmailed(period[0]);
-  const { isLoading, error, data } = FetchDataViewed(period[2]);
-  console.log(data);
-  // console.log(email);
+const Card = () => {
+  const periods = [
+    { id: 1, option: 1 },
+    { id: 2, option: 7 },
+    { id: 3, option: 30 },
+  ];
+  const [selected, setSelected] = useState(periods[0].option);
+  const { data: articleList } = _fetchDataViewed(selected);
 
-  isLoading && 'Loading...';
-  error && 'An error has occurred: ' + error.message;
+  const periodHandleChange = (e) => {
+    const getOption = e.target.value;
+    setSelected(getOption);
+  };
 
   return (
-    <div className="card m-10 bg-gray-100">
-      <div className="card_list grid w-[100vw] grid-cols-autofit gap-10 ">
-        <div className="card_item border border-sky-500 bg-gray-200">
-          <h1>Title</h1>
-          <h2>Content</h2>
-          <p>description</p>
-        </div>
-
-        <div className="card_item">
-          <h1>Title</h1>
-          <h2>Content</h2>
-          <p>description</p>
-        </div>
-
-        <div className="card_item">
-          <h1>Title</h1>
-          <h2>Content</h2>
-          <p>description</p>
-        </div>
-        <div className="card_item">
-          <h1>Title</h1>
-          <h2>Content</h2>
-          <p>description</p>
+    <>
+      <label htmlFor="cars">Choose previous day:</label>
+      <select value={selected} onChange={periodHandleChange}>
+        {periods.map((period) => (
+          <option key={period.id}>{period.option}</option>
+        ))}
+      </select>
+      <div className="card m-10 bg-gray-100">
+        <div className="card_list">
+          {articleList?.results.map((list) => {
+            const { id, title, section, date } = list;
+            const image = list?.media.map(
+              (med) => med["media-metadata"][0]?.url
+            );
+            return (
+              <>
+                <img src={image} alt={section} />
+                <div key={id} className="card_item">
+                  <h1>{title}</h1>
+                  <strong>{section}</strong>
+                  <p>{date}</p>
+                </div>
+              </>
+            );
+          })}
         </div>
       </div>
-    </div>
+    </>
   );
 };
 
-export default card;
+export default Card;

@@ -1,0 +1,26 @@
+.card_list {
+  @apply grid w-[100vw] grid-cols-autofit overflow-x-hidden h-[40vh] gap-10;
+
+  .cart_item {
+    @apply border border-sky-500 bg-gray-200
+  }
+}
+
+.card_slick {
+  @apply relative;
+  .slick-list {
+    @apply overflow-hidden transition-[height];
+  }
+  .slick-slide {
+    @apply float-left;
+  }
+  .slick-dots {
+    @apply -mb-0.5 flex justify-center gap-2 pt-4 text-[0];
+    > li > button {
+      @apply h-2 w-2 rounded-full bg-slate-300 transition-[width,_background] dark:bg-slate-500;
+    }
+    .slick-active > button {
+      @apply w-4 bg-slate-600 dark:bg-slate-300;
+    }
+  }
+}
